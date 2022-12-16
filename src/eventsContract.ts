@@ -51,8 +51,6 @@ export const initialEventsContract = (
                 data: event,
             };
 
-            // TODO: write logic behavior for events in ./behaviorEvents.ts
-            // TODO: maybe have meaning send paramets object info, if this object need for event handling
             behaviorEvents(eventName, info);
         });
     }
