@@ -1,3 +1,4 @@
 import { getMethodsContract } from "./contract";
+import { initialEventsContract } from "./eventsContract";
 
-export { getMethodsContract };
+export { getMethodsContract, initialEventsContract };
