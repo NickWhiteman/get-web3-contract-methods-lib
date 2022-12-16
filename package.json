@@ -1,14 +1,17 @@
 {
-  "name": "web3-contract-method",
-  "version": "1.0.0",
-  "description": "Library for easy access to contract methods for your frontend dapp",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Nick Whiteman",
-  "license": "ISC",
-  "devDependencies": {
-    "ethers": "^5.7.2"
-  }
+    "name": "web3-contract-method",
+    "version": "1.0.0",
+    "description": "Library for easy access to contract methods for your frontend dapp",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "rimraf /build && npx tsc"
+    },
+    "author": "Nick Whiteman",
+    "license": "ISC",
+    "dependencies": {
+        "ethers": "^5.7.2",
+        "rimraf": "^3.0.2",
+        "typescript": "^4.9.4"
+    }
 }
