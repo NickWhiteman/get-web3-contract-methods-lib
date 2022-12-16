@@ -1,0 +1,14 @@
+{
+  "name": "web3-contract-method",
+  "version": "1.0.0",
+  "description": "Library for easy access to contract methods for your frontend dapp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nick Whiteman",
+  "license": "ISC",
+  "devDependencies": {
+    "ethers": "^5.7.2"
+  }
+}
