@@ -1,8 +1,12 @@
 import { ContractInterface, ethers } from "ethers";
 
 /**
+ * @crutch eventName - Need automate get event names. Maybe Types organization ??
+ */
+
+/**
  * @description This function collects all events from the contract and subscribes to them.
- * @param {(eventName: string, info: {from: any, to: any, value: string, event: any}) => () => void} behaviorEvents
+ * @param {(eventName: string, info: T) => () => void} behaviorEvents
  * This function should be implemented on your side. Here you have to implement
  * the processing of all the events of your contract. The function must take 2 parameters. eventName: string and info: {from, to, value, event} -
  * what to do about it depends on your needs and wants.
@@ -22,36 +26,38 @@ import { ContractInterface, ethers } from "ethers";
  * };
  *
  * @param {string} contractAddress string main your app contract 0x10**16
+ * @param behaviorEvents client-side event handler function
  * @param {ContractInterface} ABI artefact for working with eventa your contract
  * @param {ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc} provider example window.etherium or your case
+ * @param {string[]} eventName event array name how writed in contract
  * @howUsed You need to call the function in the root of the application once
  */
 
-export const initialEventsContract = (
-    behaviorEvents: (eventName: string, info: { from: any; to: any; value: string; data: any }) => () => void,
-    contractAddress: string,
-    ABI: ContractInterface,
-    provider: ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc
-) => {
+export const initialEventsContract = <T>({
+    behaviorEvents,
+    contractAddress,
+    ABI,
+    provider,
+    eventName,
+}: {
+    behaviorEvents: <T>(eventName: string, info: T) => () => void;
+    contractAddress: string;
+    ABI: ContractInterface;
+    provider: ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc;
+    eventName: string[];
+}) => {
     const providerWeb3 = new ethers.providers.Web3Provider(provider);
-    const contract = new ethers.Contract(contractAddress, ABI, providerWeb3);
-    const arrayAbi = ABI as Array<any>;
-
-    const events: string[] = arrayAbi.map((abi) =>
-        abi.type === "event" && typeof abi.name === "string" ? abi.name : ""
-    );
+    const signer = providerWeb3.getSigner();
+    const contract = new ethers.Contract(contractAddress, ABI, signer);
 
     // listen events
-    for (const eventName of events) {
-        contract.on(eventName, (from, to, value, event) => {
-            const info = {
-                from,
-                to,
-                value: ethers.utils.formatUnits(value, 6),
-                data: event,
+    for (const name of eventName) {
+        contract.on(name, (args: T) => {
+            const info: T = {
+                ...args,
             };
 
-            behaviorEvents(eventName, info);
+            behaviorEvents<T>(name, info);
         });
     }
 };

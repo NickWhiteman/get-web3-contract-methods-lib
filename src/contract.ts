@@ -28,16 +28,15 @@ import { ContractInterface, ethers } from "ethers";
 
 export const getMethodsContract = <T>(
     contractAddress: string,
-    ABI: ContractInterface,
+    ABI: ContractInterface | string[],
     provider: ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc
 ): T => {
     const providerWeb3 = new ethers.providers.Web3Provider(provider);
     const signer = providerWeb3.getSigner();
     const contract = new ethers.Contract(contractAddress, ABI, signer);
-    const contractKey = Object.keys({} as T);
 
     const methodsContract = Object.fromEntries(
-        Object.entries(contract).filter(([key, value]) => contractKey.includes(key) === true && [key, value])
+        Object.entries(contract).filter(([key, value]) => Object.keys({} as T).includes(key))
     ) as T;
 
     return methodsContract;
