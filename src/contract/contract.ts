@@ -1,6 +1,20 @@
-import { ContractInterface, ethers } from "ethers";
+import { Contract, ContractInterface, ethers } from "ethers";
+import { Window } from "src/types";
 
-//TODO: You can increase the level of abstraction
+export const getSigner = (window: Window) => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+
+    return signer;
+};
+
+export const getContract = (contractAddress: string, ABI: ContractInterface | string[], window: Window): Contract => {
+    const signer = getSigner(window);
+    const contract = new ethers.Contract(contractAddress, ABI, signer);
+
+    return contract;
+};
+
 /**
  * @description This function collects an object with contract methods.
  * @param {string} contractAddress string main your app contract 0x10**16
@@ -29,14 +43,12 @@ import { ContractInterface, ethers } from "ethers";
 export const getMethodsContract = <T>(
     contractAddress: string,
     ABI: ContractInterface | string[],
-    provider: ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc
+    window: Window
 ): T => {
-    const providerWeb3 = new ethers.providers.Web3Provider(provider);
-    const signer = providerWeb3.getSigner();
-    const contract = new ethers.Contract(contractAddress, ABI, signer);
+    const contract = getContract(contractAddress, ABI, window);
 
     const methodsContract = Object.fromEntries(
-        Object.entries(contract).filter(([key, value]) => Object.keys({} as T).includes(key))
+        Object.entries(contract).filter(([key, value]) => Object.keys({} as T[keyof T]).includes(key))
     ) as T;
 
     return methodsContract;

@@ -14,7 +14,8 @@
         "outDir": "./build",
         "baseUrl": ".",
         "removeComments": true,
-        "moduleResolution": "Node"
+        "moduleResolution": "Node",
+        "jsx": "react-jsx"
     },
     "include": ["./src/**/*"],
     "exclude": ["node_modules"],

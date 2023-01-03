@@ -1,4 +1,6 @@
 import { ContractInterface, ethers } from "ethers";
+import { getContract } from "./contract";
+import { Window } from "src/types";
 
 /**
  * @crutch eventName - Need automate get event names. Maybe Types organization ??
@@ -37,18 +39,16 @@ export const initialEventsContract = <T>({
     behaviorEvents,
     contractAddress,
     ABI,
-    provider,
+    window,
     eventName,
 }: {
     behaviorEvents: <T>(eventName: string, info: T) => () => void;
     contractAddress: string;
     ABI: ContractInterface;
-    provider: ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc;
+    window: Window;
     eventName: string[];
 }) => {
-    const providerWeb3 = new ethers.providers.Web3Provider(provider);
-    const signer = providerWeb3.getSigner();
-    const contract = new ethers.Contract(contractAddress, ABI, signer);
+    const contract = getContract(contractAddress, ABI, window);
 
     // listen events
     for (const name of eventName) {
