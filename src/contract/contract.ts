@@ -1,15 +1,14 @@
 import { Contract, ContractInterface, ethers } from "ethers";
-import { Window } from "src/types";
 
-export const getSigner = (window: Window) => {
+export const getSigner = () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
 
     return signer;
 };
 
-export const getContract = (contractAddress: string, ABI: ContractInterface | string[], window: Window): Contract => {
-    const signer = getSigner(window);
+export const getContract = (contractAddress: string, ABI: ContractInterface | string[]): Contract => {
+    const signer = getSigner();
     const contract = new ethers.Contract(contractAddress, ABI, signer);
 
     return contract;
@@ -40,15 +39,11 @@ export const getContract = (contractAddress: string, ABI: ContractInterface | st
  * <Button onClick={anyAction} children='Example registration' />
  */
 
-export const getMethodsContract = <T>(
-    contractAddress: string,
-    ABI: ContractInterface | string[],
-    window: Window
-): T => {
-    const contract = getContract(contractAddress, ABI, window);
+export const getMethodsContract = <T>(contractAddress: string, ABI: ContractInterface | string[]): T => {
+    const contract = getContract(contractAddress, ABI);
 
     const methodsContract = Object.fromEntries(
-        Object.entries(contract).filter(([key, value]) => Object.keys({} as T[keyof T]).includes(key))
+        Object.entries(contract).filter(([key, value]) => Object.keys({} as T).includes(key))
     ) as T;
 
     return methodsContract;

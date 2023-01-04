@@ -1,6 +1,5 @@
 import { ContractInterface, ethers } from "ethers";
 import { getContract } from "./contract";
-import { Window } from "src/types";
 
 /**
  * @crutch eventName - Need automate get event names. Maybe Types organization ??
@@ -30,7 +29,6 @@ import { Window } from "src/types";
  * @param {string} contractAddress string main your app contract 0x10**16
  * @param behaviorEvents client-side event handler function
  * @param {ContractInterface} ABI artefact for working with eventa your contract
- * @param {ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc} provider example window.etherium or your case
  * @param {string[]} eventName event array name how writed in contract
  * @howUsed You need to call the function in the root of the application once
  */
@@ -39,16 +37,14 @@ export const initialEventsContract = <T>({
     behaviorEvents,
     contractAddress,
     ABI,
-    window,
     eventName,
 }: {
     behaviorEvents: <T>(eventName: string, info: T) => () => void;
     contractAddress: string;
     ABI: ContractInterface;
-    window: Window;
     eventName: string[];
 }) => {
-    const contract = getContract(contractAddress, ABI, window);
+    const contract = getContract(contractAddress, ABI);
 
     // listen events
     for (const name of eventName) {

@@ -1,12 +1,11 @@
 import { ethers } from "ethers";
 
-export type Window = {
-    ethereum: any; // object Ethereum
-};
+interface Window {
+    ethereum: unknown; // object Ethereum
+}
 
-export type ProviderContractType = {
+type ProviderContractType = {
     children: JSX.Element;
-    window: Window & typeof globalThis;
     ABI: ContractInterface | string[];
     eventName: string[];
     behaviorEvents: <T>(eventName: string, info: T) => () => void;
