@@ -14,7 +14,7 @@ const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
  * @generic K this custom type method contract need implements on client side
  *
  * Parameters for Provider
- * @param children this wrappwe for JSX.Element where we want put context
+ * @param children this wrapper for JSX.Element where we want put context
  * @param {ContractInterface | string[]} ABI this JSON or array string object for initional contract
  * @param {string[]} eventName array contains contract event names to automate event signing
  * @param {<T>(eventName: string, info: T) => () => void} behaviorEvents this function implements on size client side
