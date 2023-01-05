@@ -10,3 +10,9 @@ type ProviderContractType = {
     eventName: string[];
     behaviorEvents: <T>(eventName: string, info: T) => () => void;
 };
+
+type ContractType = {
+    contract: () => unknown;
+    getAccount: () => unknown;
+    connectWallet: () => Promise<void>;
+};

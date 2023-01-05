@@ -1,73 +1,78 @@
 import { parseEther } from "ethers/lib/utils";
-import { createContext, useEffect, useState } from "react";
-import { getMethodsContract } from "../contract/contract";
+import { createContext, useContext, useEffect, useState } from "react";
+
+import { getMethodsContract } from "src/contract/contract";
 import { initialEventsContract } from "src/contract/eventsContract";
-import { ProviderContractType, Window } from "src/types";
+import { ContractType, ProviderContractType, Window } from "src/types";
 
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 const { ethereum } = window;
 
-export const ContractContext = createContext({});
-
 /**
- * @description This provider is an api of the StoXCC smart contract and connection metamask.
+ * @description This provider is an api of smart contract and connection metamask.
  * This is where we put the interactions with the contract.
  * With it we get access to the contract from anywhere in the front-end application
+ * @generic T this custom type for context object need implements on client side
+ * @generic K this custom type method contract need implements on client side
  * @param children this wrappwe for JSX.Element where we want put context
- * @param ABI
- * @param eventName
- * @param behaviorEvents
+ * @param {ContractInterface | string[]} ABI this JSON or array string object for initional contract
+ * @param {string[]} eventName array contains contract event names to automate event signing
+ * @param {<T>(eventName: string, info: T) => () => void} behaviorEvents this function implements on size client side
  */
-export const ContractProvider = ({ children, ABI, eventName, behaviorEvents }: ProviderContractType) => {
-    const [account, setAccount] = useState<unknown>();
-    const contractMethods = getMethodsContract(CONTRACT_ADDRESS!, ABI);
-    const gasLimit = parseEther("0.0000000000021");
+export const useContextEthers = function <T, K>() {
+    const ContractContext = createContext({} as ContractType & T);
 
-    const getAccount = () => {
-        if (account) {
-            return account;
-        }
+    return ({ children, ABI, eventName, behaviorEvents }: ProviderContractType) => {
+        const [account, setAccount] = useState<string>("");
+        const contractMethods = getMethodsContract<K>(CONTRACT_ADDRESS!, ABI);
+        const gasLimit = parseEther("0.0000000000021");
+
+        const getAccount = () => {
+            if (account) {
+                return account;
+            }
+        };
+
+        const contract = () => {
+            return contractMethods;
+        };
+
+        const connectWallet = async () => {
+            try {
+                if (!ethereum) throw new Error("Please install MetaMask.");
+
+                const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                setAccount(accounts[0]);
+            } catch (error) {
+                console.log(error);
+                throw new Error("No ethereum object");
+            }
+        };
+
+        const checkIfWalletIsConnect = async () => {
+            try {
+                connectWallet();
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        const contextFunctions = {
+            contract,
+            getAccount,
+            connectWallet,
+        } as ContractType & T;
+
+        useEffect(() => {
+            checkIfWalletIsConnect();
+            initialEventsContract({
+                behaviorEvents,
+                contractAddress: CONTRACT_ADDRESS!,
+                ABI,
+                eventName,
+            });
+        }, [account]);
+
+        return <ContractContext.Provider value={contextFunctions}>{children}</ContractContext.Provider>;
     };
-
-    const contract = () => {
-        return contractMethods;
-    };
-
-    const connectWallet = async () => {
-        try {
-            if (!ethereum) console.log("Please install MetaMask.");
-
-            const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-            setAccount(accounts[0]);
-        } catch (error) {
-            console.log(error);
-            throw new Error("No ethereum object");
-        }
-    };
-
-    const checkIfWalletIsConnect = async () => {
-        try {
-            connectWallet();
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const contextFunctions = {
-        contract,
-        getAccount,
-        connectWallet,
-    };
-
-    useEffect(() => {
-        checkIfWalletIsConnect();
-        initialEventsContract({
-            behaviorEvents,
-            contractAddress: CONTRACT_ADDRESS!,
-            ABI,
-            eventName,
-        });
-    }, [account]);
-
-    return <ContractContext.Provider value={contextFunctions}>{children}</ContractContext.Provider>;
 };
