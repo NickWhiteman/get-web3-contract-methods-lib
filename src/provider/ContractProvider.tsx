@@ -5,15 +5,15 @@ import { getMethodsContract } from "src/contract/contract";
 import { initialEventsContract } from "src/contract/eventsContract";
 import { ContractType, ProviderContractType, Window } from "src/types";
 
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 const { ethereum } = window;
+const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
 /**
- * @description This provider is an api of smart contract and connection metamask.
- * This is where we put the interactions with the contract.
- * With it we get access to the contract from anywhere in the front-end application
+ * @description this hoc return Provider
  * @generic T this custom type for context object need implements on client side
  * @generic K this custom type method contract need implements on client side
+ *
+ * Parameters for Provider
  * @param children this wrappwe for JSX.Element where we want put context
  * @param {ContractInterface | string[]} ABI this JSON or array string object for initional contract
  * @param {string[]} eventName array contains contract event names to automate event signing
