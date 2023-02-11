@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ContractStoreActions } from "src/redux/contract-reducer";
 import { selectStore } from "src/redux/selectors/selectors-out-store";
-import { RootState } from "src/types";
 import styled from "styled-components";
 
 const NotificationWrapper = styled.div`
