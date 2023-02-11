@@ -1,3 +1,1 @@
-##### TODO: You want to design the transfer of types to the `provider` for `contract methods` and `contract events`.
-
-##### TODO: Add a contract object with a call or develop a mechanic that will create its own function for each method and nest it in the `contextFunctions` object
+##### TODO: Rewrite the approach from a context hook to a contract method execution queue approach into a scalable application state model with the results of a smart contract call in redux-saga, to control the availability of information and eliminate cases of undefined or network delay in the execution of a smart contract. With the ability to scale the execution queue using custom sagas on the client side and integration into this middleware.
