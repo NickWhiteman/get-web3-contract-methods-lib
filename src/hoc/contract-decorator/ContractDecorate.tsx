@@ -2,7 +2,8 @@ import { FC } from "react";
 import styled from "styled-components";
 
 import { ContractDecorateType } from "src/types";
-import { Loader } from "./components/Loader";
+import { Loader } from "../components/Loader";
+import { Notification } from "../notification/Notification";
 import { selectStore } from "src/redux/selectors/selectors-out-store";
 
 const StyledLoader = styled.div`
@@ -20,11 +21,15 @@ const StyledLoader = styled.div`
 export const ContractDecorate: FC<ContractDecorateType> = ({ children }) => {
     const { isLoading } = selectStore;
 
-    return isLoading ? (
-        <StyledLoader>
-            <Loader />
-        </StyledLoader>
-    ) : (
-        <>{children}</>
+    return (
+        <Notification>
+            {isLoading ? (
+                <StyledLoader>
+                    <Loader />
+                </StyledLoader>
+            ) : (
+                <>{children}</>
+            )}
+        </Notification>
     );
 };
