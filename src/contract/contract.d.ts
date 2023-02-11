@@ -21,22 +21,6 @@ export const getContract = (contractAddress: string, ABI: ContractInterface | st
  * @param {ethers.providers.ExternalProvider | ethers.providers.JsonRpcFetchFunc} provider example window.etherium or your case
  * @returns {T} This type you need developing on your side and send how generic inside this function
  * @howUsed This method is called on React components. After the call, you can call to the contract.
- *
- * @example
- * ... In some React component ...
- * const contract: SomeContractType = getMethodsContract<SomeContractType>(
- *      contractAddress,
- *      ABI,
- *      provider
- * );
- *
- * const anyAction = async () => {
- *      await contract.anyMethodContract()
- *          .then()
- *          .catch()
- * }
- * ...
- * <Button onClick={anyAction} children='Example registration' />
  */
 
 export const getMethodsContract = <T>(contractAddress: string, ABI: ContractInterface | string[]): T => {
