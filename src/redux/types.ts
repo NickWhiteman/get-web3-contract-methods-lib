@@ -7,6 +7,7 @@ export type NotificationType = {
     message?: string;
 };
 
+//TODO: need thinking about this
 type CustomStore = {
     [key: string]: any;
 };
