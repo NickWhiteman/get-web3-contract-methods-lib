@@ -10,6 +10,7 @@ const contract = getMethodsContract<ContractMethodsType>(process.env.CONTRACT_AD
 
 /**
  * example how write saga workers
+ * TODO: You need to design the receipt of generators for the Saga from the client side
  */
 export const ContractSagaWorker: ContractSagaWorkerType = {
     exampleWorker: function* ({ payload }: { payload: string }) {

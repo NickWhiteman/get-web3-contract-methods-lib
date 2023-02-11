@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import styled from "styled-components";
 
 import { ContractDecorateType } from "src/types";
@@ -31,7 +31,7 @@ export const { ContractStoreActions, ContractReducer } = InitStoreContract(
     } // this initState store
 );
 
-export const ContractDecorate: FC<ContractDecorateType> = ({ children, initStateContractStore: {} }) => {
+export const ContractDecorate: FC<ContractDecorateType> = ({ children }) => {
     const { isLoading } = selectStore;
 
     return (

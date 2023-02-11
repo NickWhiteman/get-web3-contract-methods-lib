@@ -16,7 +16,6 @@ type RootState = ReturnType<typeof store.getState>;
 
 type ContractDecorateType = {
     children: JSX.Element;
-    initStateContractStore: {};
 };
 
 type ContractMethodsType = {

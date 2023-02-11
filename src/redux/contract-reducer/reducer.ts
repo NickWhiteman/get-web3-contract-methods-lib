@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IContractState, NotificationType } from "../types";
+import { NotificationType } from "../types";
 
 /**
  * InitStoreContract - This method need call in time started your app for state initialization for save result after call contract methods and save this results in app  state. 

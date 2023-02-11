@@ -1,6 +1,7 @@
 import { ActionCreatorWithPayload, ActionCreatorWithPreparedPayload, createAction } from "@reduxjs/toolkit";
 import { ContractSagaWorker } from "./app-saga";
 
+// TODO: need think about this
 let ContractSagaAction: {
     [key: string]:
         | void
