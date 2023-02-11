@@ -6,7 +6,7 @@ import { contractSaga } from "./saga/root-saga";
 
 export const contractSagaMiddleware = createSagaMiddleware();
 
-export const store = configureStore({
+export const contractStore = configureStore({
     reducer: contractReducer,
     middleware: [contractSagaMiddleware],
 });

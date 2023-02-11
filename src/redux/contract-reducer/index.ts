@@ -1,3 +1,3 @@
-import { ContractReducer, ContractStoreActions } from "./reducer";
+import { InitStoreContract } from "./reducer";
 
-export { ContractReducer, ContractStoreActions };
+export { InitStoreContract };

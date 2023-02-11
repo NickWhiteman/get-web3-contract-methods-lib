@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import styled from "styled-components";
 
 import { ContractDecorateType } from "src/types";
-import { Loader } from "../components/Loader";
-import { Notification } from "../notification/Notification";
+import { Loader } from "../components/loader";
+import { Notification } from "../components/notification/Notification";
 import { selectStore } from "src/redux/selectors/selectors-out-store";
+import { InitStoreContract } from "src/redux/contract-reducer";
 
 const StyledLoader = styled.div`
     width: 100vw;
@@ -18,7 +19,19 @@ const StyledLoader = styled.div`
     position: fixed;
 `;
 
-export const ContractDecorate: FC<ContractDecorateType> = ({ children }) => {
+export const { ContractStoreActions, ContractReducer } = InitStoreContract(
+    {}, // this reducer
+    {
+        isLoading: false,
+        notification: {
+            isActive: false,
+            mode: undefined,
+            message: undefined,
+        },
+    } // this initState store
+);
+
+export const ContractDecorate: FC<ContractDecorateType> = ({ children, initStateContractStore: {} }) => {
     const { isLoading } = selectStore;
 
     return (
